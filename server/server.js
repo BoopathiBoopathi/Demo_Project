@@ -34,6 +34,16 @@ io.on('connection', (socket) => {
     });
 });
 
+app.use(express.static(path.join(__dirname, "../client/build")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+});
+
+app.get("/api/hello", (req, res) => {
+    res.json({ message: "Hello from backend!" });
+});
+
 app.get('/api/docs', async (req, res) => {
     try {
         const docs = await Document.find().sort({ createdAt: -1 }).lean();
