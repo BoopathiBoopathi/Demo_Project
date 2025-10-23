@@ -15,13 +15,13 @@ const path = require('path');
 app.use(express.json());
 const server = http.createServer(app);
 // const io = new Server(server, { cors: { origin: '*' } });
-const io = new Server(server, {
-    cors: {
-        // origin: "*",
-        origin: "https://demo-project-1-vdew.onrender.com",
-        methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
-    },
-});
+// const io = new Server(server, {
+//     cors: {
+//         // origin: "*",
+//         origin: "https://demo-project-1-vdew.onrender.com",
+//         methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
+//     },
+// });
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'],
@@ -35,19 +35,19 @@ const MONGO = 'mongodb+srv://boopathiboo647_db_user:Boopathi4838@cluster0.tigfji
 mongoose.connect(MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Mongo connected'))
     .catch(err => console.error(" error ", err, "MONGO", MONGO));
-io.on('connection', (socket) => {
-    console.log('socket connected', socket.id);
-    socket.on('joinDoc', ({ docId }) => {
-        socket.join(`doc:${docId}`);
-        console.log(socket.id, 'joined', `doc:${docId}`);
-    });
-    socket.on('leaveDoc', ({ docId }) => {
-        socket.leave(`doc:${docId}`);
-    });
-    socket.on('disconnect', () => {
-        // console.log('disconnect', socket.id);
-    });
-});
+// io.on('connection', (socket) => {
+//     console.log('socket connected', socket.id);
+//     socket.on('joinDoc', ({ docId }) => {
+//         socket.join(`doc:${docId}`);
+//         console.log(socket.id, 'joined', `doc:${docId}`);
+//     });
+//     socket.on('leaveDoc', ({ docId }) => {
+//         socket.leave(`doc:${docId}`);
+//     });
+//     socket.on('disconnect', () => {
+//         // console.log('disconnect', socket.id);
+//     });
+// });
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
@@ -166,7 +166,7 @@ app.post('/api/docs/:docId/annotations', async (req, res) => {
             _id: ann._id, start: ann.start, end: ann.end, userId: ann.userId, createdAt: ann.createdAt
         };
 
-        io.to(`doc:${docId}`).emit('annotation:created', payload);
+        // io.to(`doc:${docId}`).emit('annotation:created', payload);
         return res.json(payload);
     } catch (err) {
         console.error(err);
@@ -180,7 +180,7 @@ app.delete('/api/annotations/:id', async (req, res) => {
         const id = req.params.id;
         const ann = await Annotation.findByIdAndDelete(id);
         if (!ann) return res.status(404).json({ message: 'not found' });
-        io.to(`doc:${ann.docId}`).emit('annotation:deleted', { _id: ann._id });
+        // io.to(`doc:${ann.docId}`).emit('annotation:deleted', { _id: ann._id });
         res.json({ ok: true });
     } catch (err) {
         console.error(err);
