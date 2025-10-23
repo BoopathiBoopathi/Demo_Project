@@ -17,7 +17,8 @@ const server = http.createServer(app);
 // const io = new Server(server, { cors: { origin: '*' } });
 const io = new Server(server, {
     cors: {
-        origin: "*",
+        // origin: "*",
+        origin: "https://demo-project-1-vdew.onrender.com",
         methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
     },
 });
