@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 4000;
 const MONGO = 'mongodb+srv://boopathiboo647_db_user:Boopathi4838@cluster0.tigfjii.mongodb.net/Sample?retryWrites=true&w=majority';
 mongoose.connect(MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Mongo connected'))
-    .catch(err => console.error(err));
+    .catch(err => console.error(" error ",err, "MONGO",MONGO ));
 io.on('connection', (socket) => {
     console.log('socket connected', socket.id);
     socket.on('joinDoc', ({ docId }) => {
