@@ -1,32 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { io } from "socket.io-client";
 
-const socket = io("http://localhost:4000");
 
 export default function DocumentViewer({ doc }) {
     const [annotations, setAnnotations] = useState([]);
     const [selectedRange, setSelectedRange] = useState(null);
     const contentRef = useRef();
 
-    useEffect(() => {
-        // join socket room for this doc
-        socket.emit("joinDoc", { docId: doc._id });
-
-        // fetch annotations
-        axios.get(`http://localhost:4000/api/docs/${doc._id}/annotations`)
+    const getDoc = async () => {
+        const API_BASE_URL = import.meta.env.VITE_SERVER;
+        axios.get(`${API_BASE_URL}/api/docs/${doc._id}/annotations`)
             .then((res) => setAnnotations(res.data))
             .catch(console.error);
-
-        // listen for new annotations
-        socket.on("annotation:created", (ann) => {
-            if (ann.docId === doc._id) setAnnotations((prev) => [...prev, ann]);
-        });
-
-        return () => {
-            socket.emit("leaveDoc", { docId: doc._id });
-            socket.off("annotation:created");
-        };
+    }
+    useEffect(() => {
+        getDoc(doc._id)
     }, [doc._id]);
 
     const handleTextSelect = () => {
