@@ -5,9 +5,9 @@ import DocumentList from "../components/DocumentList";
 
 export default function Home({ onView }) {
     const [docs, setDocs] = useState([]);
-
+    const API_BASE_URL = import.meta.env.VITE_SERVER;
     const fetchDocs = async () => {
-        const res = await axios.get("http://localhost:4000/api/docs");
+        const res = await axios.get(`${API_BASE_URL}/api/docs`);
         setDocs(res.data);
     };
 
@@ -15,7 +15,7 @@ export default function Home({ onView }) {
 
     const handleDelete = async (id) => {
         if (!window.confirm("Delete this document?")) return;
-        await axios.delete(`http://localhost:4000/api/docs/${id}`);
+        await axios.delete(`${API_BASE_URL}/api/docs/${id}`);
         fetchDocs();
     };
 

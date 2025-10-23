@@ -11,7 +11,14 @@ export default function DocumentUpload({ onUploaded }) {
         formData.append("file", file);
         try {
             setLoading(true);
-            const res = await axios.post("http://localhost:4000/api/docs/upload", formData);
+            const API_BASE_URL = import.meta.env.VITE_SERVER;
+
+            const res = await axios.post(`${API_BASE_URL}/api/docs/upload`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
             onUploaded(res.data);
             setFile(null);
         } catch (err) {

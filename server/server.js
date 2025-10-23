@@ -11,10 +11,22 @@ const Annotation = require('./models/Annotation');
 const { extractTextFromPDF } = require('./utils/pdfExtract');
 const app = express();
 const path = require('path');
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
+// const io = new Server(server, { cors: { origin: '*' } });
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
+    },
+});
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 const upload = multer({ storage: multer.memoryStorage() });
 const PORT = process.env.PORT || 4000;
 const MONGO = process.env.MONGO_URI || 'mongodb://localhost:27017/collabannotation';
