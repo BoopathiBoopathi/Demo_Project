@@ -10,6 +10,7 @@ const Document = require('./models/Document');
 const Annotation = require('./models/Annotation');
 const { extractTextFromPDF } = require('./utils/pdfExtract');
 const app = express();
+const path = require('path');
 app.use(cors());
 app.use(express.json());
 const server = http.createServer(app);
