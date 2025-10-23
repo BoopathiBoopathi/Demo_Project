@@ -33,7 +33,7 @@ const PORT = process.env.PORT || 4000;
 const MONGO = 'mongodb+srv://boopathiboo647_db_user:Boopathi4838@cluster0.tigfjii.mongodb.net/Sample?retryWrites=true&w=majority';
 mongoose.connect(MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Mongo connected'))
-    .catch(err => console.error(" error ",err, "MONGO",MONGO ));
+    .catch(err => console.error(" error ", err, "MONGO", MONGO));
 io.on('connection', (socket) => {
     console.log('socket connected', socket.id);
     socket.on('joinDoc', ({ docId }) => {
@@ -50,9 +50,7 @@ io.on('connection', (socket) => {
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
-});
+
 
 app.get("/api/hello", (req, res) => {
     res.json({ message: "Hello from backend!" });
@@ -188,4 +186,9 @@ app.delete('/api/annotations/:id', async (req, res) => {
         res.status(500).json({ message: 'server error' });
     }
 });
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
+});
+
 server.listen(PORT, () => console.log('Server running on', PORT));
