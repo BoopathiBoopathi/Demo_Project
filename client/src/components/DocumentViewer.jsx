@@ -30,8 +30,9 @@ export default function DocumentViewer({ doc }) {
         if (!comment) return;
 
         const payload = { start, end, comment, userId: "demoUser" };
-
-        axios.post(`http://localhost:4000/api/docs/${doc._id}/annotations`, payload)
+        const API_BASE_URL = import.meta.env.VITE_SERVER;
+        const url = `${API_BASE_URL}/api/docs/${doc._id}/annotations`
+        axios.post(url, payload)
             .then((res) => setAnnotations((prev) => [...prev, res.data]))
             .catch((err) => {
                 if (err.response?.status === 409) alert("Duplicate annotation!");

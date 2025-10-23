@@ -12,8 +12,13 @@ export default function FileUpload({ onUpload }) {
         formData.append("file", file);
 
         try {
-            const res = await axios.post("http://localhost:4000/api/docs/upload", formData, {
-                headers: { "Content-Type": "multipart/form-data" },
+
+             const API_BASE_URL = import.meta.env.VITE_SERVER;
+
+            const res = await axios.post(`${API_BASE_URL}/api/docs/upload`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
             });
             onUpload(res.data); // pass uploaded doc info to parent
         } catch (err) {
