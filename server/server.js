@@ -21,8 +21,7 @@ app.use(cors({
 
 const upload = multer({ storage: multer.memoryStorage() });
 const PORT = process.env.PORT || 4000;
-// const MONGO = process.env.MONGO_URI || 'mongodb+srv://boopathiboo647_db_user:Boopathi4838@cluster0.tigfjii.mongodb.net/Sample';
-const MONGO = 'mongodb+srv://boopathiboo647_db_user:Boopathi4838@cluster0.tigfjii.mongodb.net/Sample?retryWrites=true&w=majority';
+const MONGO = process.env.MONGO_URI;
 mongoose.connect(MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Mongo connected'))
     .catch(err => console.error(" error ", err, "MONGO", MONGO));
@@ -91,7 +90,7 @@ app.get('/api/docs/:docId', async (req, res) => {
         res.status(500).json({ message: 'server error' });
     }
 });
-// Get annotations (optionally by range)
+// Get annotations
 app.get('/api/docs/:docId/annotations', async (req, res) => {
     try {
         const { docId } = req.params;
@@ -99,7 +98,6 @@ app.get('/api/docs/:docId/annotations', async (req, res) => {
             start:
                 1
         }).lean().limit(5000);
-        // send lightweight projection
         const lightweight = anns.map(a => ({
             _id: a._id, start: a.start, end:
                 a.end, userId: a.userId, createdAt: a.createdAt
