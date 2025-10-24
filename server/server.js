@@ -5,23 +5,14 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const crypto = require('crypto');
-// const { Server } = require('socket.io');
 const Document = require('./models/Document');
 const Annotation = require('./models/Annotation');
 const { extractTextFromPDF } = require('./utils/pdfExtract');
 const app = express();
 const path = require('path');
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 const server = http.createServer(app);
-// const io = new Server(server, { cors: { origin: '*' } });
-// const io = new Server(server, {
-//     cors: {
-//         // origin: "*",
-//         origin: "https://demo-project-1-vdew.onrender.com",
-//         methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"],
-//     },
-// });
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS'],
@@ -35,23 +26,8 @@ const MONGO = 'mongodb+srv://boopathiboo647_db_user:Boopathi4838@cluster0.tigfji
 mongoose.connect(MONGO, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Mongo connected'))
     .catch(err => console.error(" error ", err, "MONGO", MONGO));
-// io.on('connection', (socket) => {
-//     console.log('socket connected', socket.id);
-//     socket.on('joinDoc', ({ docId }) => {
-//         socket.join(`doc:${docId}`);
-//         console.log(socket.id, 'joined', `doc:${docId}`);
-//     });
-//     socket.on('leaveDoc', ({ docId }) => {
-//         socket.leave(`doc:${docId}`);
-//     });
-//     socket.on('disconnect', () => {
-//         // console.log('disconnect', socket.id);
-//     });
-// });
 
 app.use(express.static(path.join(__dirname, "../client/dist")));
-
-
 
 app.get("/api/hello", (req, res) => {
     res.json({ message: "Hello from backend!" });
