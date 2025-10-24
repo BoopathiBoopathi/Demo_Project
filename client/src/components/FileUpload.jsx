@@ -20,7 +20,7 @@ export default function FileUpload({ onUpload }) {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            onUpload(res.data); // pass uploaded doc info to parent
+            onUpload(res.data);
         } catch (err) {
             console.error(err);
             alert("Upload failed");
